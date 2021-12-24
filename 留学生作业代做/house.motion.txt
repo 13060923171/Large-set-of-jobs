@@ -1,0 +1,3 @@
+bathroom,220543,undetected
+livingroom,220622,detected
+bathroom,220731,undetected

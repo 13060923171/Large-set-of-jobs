@@ -1,0 +1,1054 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>index</title>
+    <script type="text/javascript" src="../static/js/jquery.js"></script>
+    <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
+    <script type="text/javascript" src="https://assets.pyecharts.org/assets/bmap.min.js"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=XdSmvztdgmWV2MRVuVCte6xZtYTQHAxG"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/getscript?v=2.0&ak=XdSmvztdgmWV2MRVuVCte6xZtYTQHAxG"></script>
+
+    <link rel="stylesheet" href="../static/css/comon0.css">
+</head>
+<script>
+    $(window).load(function(){
+        $(".loading").fadeOut()
+    })
+
+    /****/
+    $(document).ready(function(){
+        var whei=$(window).width()
+        $("html").css({fontSize:whei/20})
+        $(window).resize(function(){
+            var whei=$(window).width()
+            $("html").css({fontSize:whei/20})
+        });
+    });
+
+
+
+
+
+
+</script>
+<script type="text/javascript" src="../static/js/echarts.min.js"></script>
+<script type="text/javascript" src="../static/js/china.js"></script>
+
+<body>
+<div class="canvas" style="opacity: .2">
+    <iframe frameborder="0" src="../static/js/index.html" style="width: 100%; height: 100%"></iframe>
+</div>
+<div class="loading">
+    <div class="loadbox"><img src="../static/picture/loading.gif"> 页面加载中...</div>
+</div>
+<div class="head">
+    <h1>{{title}}</h1>
+    <div class="weather">
+        <!--        <img src="picture/weather.png"><span>多云转小雨</span>-->
+        <span id="showTime"></span>
+    </div>
+
+    <script>
+        var t = null;
+        t = setTimeout(time,1000);//開始运行
+        function time()
+        {
+            clearTimeout(t);//清除定时器
+            dt = new Date();
+            var y=dt.getFullYear();
+            var mt=dt.getMonth()+1;
+            var day=dt.getDate();
+            var h=dt.getHours();//获取时
+            var m=dt.getMinutes();//获取分
+            var s=dt.getSeconds();//获取秒
+            document.getElementById("showTime").innerHTML = y+"年"+mt+"月"+day+"日"+"-"+h+"时"+m+"分"+s+"秒";
+            t = setTimeout(time,1000); //设定定时器，循环运行
+        }
+
+
+
+    </script>
+
+
+</div>
+<div class="mainbox">
+    <ul class="clearfix">
+        <li>
+            <div class="boxall" style="height: 3.2rem">
+                <div class="alltitle">{{form.echart1.title}}</div>
+                <div class="allnav" id="echart1"></div>
+                <div class="boxfoot"></div>
+            </div>
+            <div class="boxall" style="height: 3.2rem">
+                <div class="alltitle">{{form.echart2.title}}</div>
+                <div class="allnav" id="echart2"></div>
+                <div class="boxfoot"></div>
+            </div>
+            <div class="boxall" style="height: 3.2rem">
+                <div class="alltitle">{{form.echart3.title}}</div>
+                <div class="allnav" id="echart3"></div>
+                <div class="boxfoot"></div>
+            </div>
+        </li>
+        <li>
+            <div class="bar">
+                <div class="barbox">
+                    <ul class="clearfix">
+                        <li class="pulll_left counter">{{form.counter.value}}</li>
+                        <li class="pulll_left counter">{{form.counter2.value}}</li>
+                    </ul>
+                </div>
+                <div class="barbox2">
+                    <ul class="clearfix">
+                        <li class="pulll_left">{{form.counter.name}}</li>
+                        <li class="pulll_left">{{form.counter2.name}}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="boxall" style="height:8.3rem">
+                <div class="alltitle">{{form.echart6.title}}</div>
+                <div class="allnav" id="echart6"></div>
+                <div class="boxfoot"></div>
+            </div>
+        </li>
+        <li>
+            <div class="boxall" style="height:4.9rem">
+                <div class="alltitle">{{form.echart4.title}}</div>
+                <div class="allnav" id="echart4"></div>
+                <div class="boxfoot"></div>
+            </div>
+            <div class="boxall" style="height: 4.7rem">
+                <div class="alltitle">{{form.echart5.title}}</div>
+                <div class="allnav" id="echart5"></div>
+                <div class="boxfoot"></div>
+            </div>
+
+        </li>
+    </ul>
+</div>
+<div class="back"></div>
+
+<!--echart1-->
+<script>
+    $(function echarts_1() {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('echart1'));
+        option = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    lineStyle: {
+                        color: '#dddc6b'
+                    }
+                }
+            },
+            legend: {
+                top:'0%',
+                "show": false,
+                data:{{form.echart1.names|safe}},
+        textStyle: {
+            color: 'rgba(255,255,255,.5)',
+                fontSize:'12',
+        }
+    },
+        grid: {
+            left: '10',
+                top: '30',
+                right: '10',
+                bottom: '30',
+                containLabel: true
+        },
+        xAxis: [{
+            type: 'category',
+            boundaryGap: false,
+            axisLabel:  {
+                textStyle: {
+                    color: "rgba(255,255,255,.6)",
+                    fontSize:12,
+                },
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,.2)'
+                }
+            },
+            data: {{form.echart1.xAxis|safe}}
+    }, {
+            axisPointer: {show: false},
+            axisLine: {show: false},
+            position: 'bottom',
+                offset: 20,
+        }],
+        yAxis: [{
+            type: 'value',
+            axisTick: {show: false},
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,.1)'
+                }
+            },
+            axisLabel:  {
+                textStyle: {
+                    color: "rgba(255,255,255,.6)",
+                    fontSize:12,
+                },
+            },
+            splitLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,.1)'
+                }
+            }
+        }],
+            series: [
+            {
+                name: '{{form.echart1.data[0].name}}',
+                data: {{form.echart1.data[0].value|safe}},
+        type: 'line',
+            smooth: true,
+            symbol: 'circle',
+            symbolSize: 5,
+            showSymbol: false,
+            lineStyle: {
+            normal: {
+                color: '#0184d5',
+                    width: 2
+            }
+        },
+        areaStyle: {
+            normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: 'rgba(1, 132, 213, 0.4)'
+                }, {
+                    offset: 0.8,
+                    color: 'rgba(1, 132, 213, 0.1)'
+                }], false),
+                    shadowColor: 'rgba(0, 0, 0, 0.1)',
+            }
+        },
+        itemStyle: {
+            normal: {
+                color: '#0184d5',
+                    borderColor: 'rgba(221, 220, 107, .1)',
+                    borderWidth: 12
+            }
+        },
+    },
+        {
+            name: '{{form.echart1.data[1].name}}',
+                data: {{form.echart1.data[1].value|safe}},
+            type: 'line',
+                smooth: true,
+            symbol: 'circle',
+            symbolSize: 5,
+            showSymbol: false,
+            lineStyle: {
+            normal: {
+                color: '#00d887',
+                    width: 2
+            }
+        },
+            areaStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: 'rgba(0, 216, 135, 0.4)'
+                    }, {
+                        offset: 0.8,
+                        color: 'rgba(0, 216, 135, 0.1)'
+                    }], false),
+                        shadowColor: 'rgba(0, 0, 0, 0.1)',
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: '#00d887',
+                        borderColor: 'rgba(221, 220, 107, .1)',
+                        borderWidth: 12
+                }
+            },
+        },
+        {
+            name: '{{form.echart1.data[2].name}}',
+                data: {{form.echart1.data[2].value|safe}},
+            type: 'line',
+                smooth: true,
+            symbol: 'circle',
+            symbolSize: 5,
+            showSymbol: false,
+            lineStyle: {
+            normal: {
+                color: '#9B59B6',
+                    width: 2
+            }
+        },
+            areaStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: 'rgba(0, 216, 135, 0.4)'
+                    }, {
+                        offset: 0.8,
+                        color: 'rgba(0, 216, 135, 0.1)'
+                    }], false),
+                        shadowColor: 'rgba(0, 0, 0, 0.1)',
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: '#9B59B6',
+                        borderColor: 'rgba(221, 220, 107, .1)',
+                        borderWidth: 12
+                }
+            },
+        },
+        {
+            name: '{{form.echart1.data[3].name}}',
+                data: {{form.echart1.data[3].value|safe}},
+            type: 'line',
+                smooth: true,
+            symbol: 'circle',
+            symbolSize: 5,
+            showSymbol: false,
+            lineStyle: {
+            normal: {
+                color: '#EC7063',
+                    width: 2
+            }
+        },
+            areaStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: 'rgba(0, 216, 135, 0.4)'
+                    }, {
+                        offset: 0.8,
+                        color: 'rgba(0, 216, 135, 0.1)'
+                    }], false),
+                        shadowColor: 'rgba(0, 0, 0, 0.1)',
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: '#EC7063',
+                        borderColor: 'rgba(221, 220, 107, .1)',
+                        borderWidth: 12
+                }
+            },
+        },
+        {
+            name: '{{form.echart1.data[4].name}}',
+                data: {{form.echart1.data[4].value|safe}},
+            type: 'line',
+                smooth: true,
+            symbol: 'circle',
+            symbolSize: 5,
+            showSymbol: false,
+            lineStyle: {
+            normal: {
+                color: '#F1C40F',
+                    width: 2
+            }
+        },
+            areaStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: 'rgba(0, 216, 135, 0.4)'
+                    }, {
+                        offset: 0.8,
+                        color: 'rgba(0, 216, 135, 0.1)'
+                    }], false),
+                        shadowColor: 'rgba(0, 0, 0, 0.1)',
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: '#F1C40F',
+                        borderColor: 'rgba(221, 220, 107, .1)',
+                        borderWidth: 12
+                }
+            },
+        },
+        {
+            name: '{{form.echart1.data[5].name}}',
+                data: {{form.echart1.data[5].value|safe}},
+            type: 'line',
+                smooth: true,
+            symbol: 'circle',
+            symbolSize: 5,
+            showSymbol: false,
+            lineStyle: {
+            normal: {
+                color: '#F39C12',
+                    width: 2
+            }
+        },
+            areaStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: 'rgba(0, 216, 135, 0.4)'
+                    }, {
+                        offset: 0.8,
+                        color: 'rgba(0, 216, 135, 0.1)'
+                    }], false),
+                        shadowColor: 'rgba(0, 0, 0, 0.1)',
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: '#F39C12',
+                        borderColor: 'rgba(221, 220, 107, .1)',
+                        borderWidth: 12
+                }
+            },
+        },
+        {
+            name: '{{form.echart1.data[6].name}}',
+                data: {{form.echart1.data[6].value|safe}},
+            type: 'line',
+                smooth: true,
+            symbol: 'circle',
+            symbolSize: 5,
+            showSymbol: false,
+            lineStyle: {
+            normal: {
+                color: '#34495E',
+                    width: 2
+            }
+        },
+            areaStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: 'rgba(0, 216, 135, 0.4)'
+                    }, {
+                        offset: 0.8,
+                        color: 'rgba(0, 216, 135, 0.1)'
+                    }], false),
+                        shadowColor: 'rgba(0, 0, 0, 0.1)',
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: '#34495E',
+                        borderColor: 'rgba(221, 220, 107, .1)',
+                        borderWidth: 12
+                }
+            },
+        },
+        {
+            name: '{{form.echart1.data[7].name}}',
+                data: {{form.echart1.data[7].value|safe}},
+            type: 'line',
+                smooth: true,
+            symbol: 'circle',
+            symbolSize: 5,
+            showSymbol: false,
+            lineStyle: {
+            normal: {
+                color: '#FFA07A',
+                    width: 2
+            }
+        },
+            areaStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: 'rgba(0, 216, 135, 0.4)'
+                    }, {
+                        offset: 0.8,
+                        color: 'rgba(0, 216, 135, 0.1)'
+                    }], false),
+                        shadowColor: 'rgba(0, 0, 0, 0.1)',
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: '#FFA07A',
+                        borderColor: 'rgba(221, 220, 107, .1)',
+                        borderWidth: 12
+                }
+            },
+        },
+    ]
+    };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        window.addEventListener("resize",function(){
+            myChart.resize();
+        });
+    })
+
+
+
+
+
+</script>
+<!--echart2-->
+<script>
+    $(function echarts_2() {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('echart2'));
+        option = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    lineStyle: {
+                        color: '#dddc6b'
+                    }
+                }
+            },
+            legend: {
+                top:'0%',
+                data:{{form.echart2.names|safe}},
+        textStyle: {
+            color: 'rgba(255,255,255,.5)',
+                fontSize:'12',
+        }
+    },
+        grid: {
+            left: '10',
+                top: '30',
+                right: '10',
+                bottom: '10',
+                containLabel: true
+        },
+        xAxis: [{
+            type: 'category',
+            boundaryGap: false,
+            axisLabel:  {
+                textStyle: {
+                    color: "rgba(255,255,255,.6)",
+                    fontSize:12,
+                },
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,.2)'
+                }
+            },
+            data: {{form.echart2.xAxis|safe}}
+    }, {
+            axisPointer: {show: false},
+            axisLine: {show: false},
+            position: 'bottom',
+                offset: 20,
+        }],
+        yAxis: [{
+            type: 'value',
+            axisTick: {show: false},
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,.1)'
+                }
+            },
+            axisLabel:  {
+                textStyle: {
+                    color: "rgba(255,255,255,.6)",
+                    fontSize:12,
+                },
+            },
+            splitLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,.1)'
+                }
+            }
+        }],
+            series: [
+            {
+                name: '{{form.echart2.data[0].name}}',
+                data: {{form.echart2.data[0].value|safe}},
+        type: 'line',
+            smooth: true,
+            symbol: 'circle',
+            symbolSize: 5,
+            showSymbol: false,
+            lineStyle: {
+            normal: {
+                color: '#0184d5',
+                    width: 2
+            }
+        },
+        areaStyle: {
+            normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: 'rgba(1, 132, 213, 0.4)'
+                }, {
+                    offset: 0.8,
+                    color: 'rgba(1, 132, 213, 0.1)'
+                }], false),
+                    shadowColor: 'rgba(0, 0, 0, 0.1)',
+            }
+        },
+        itemStyle: {
+            normal: {
+                color: '#0184d5',
+                    borderColor: 'rgba(221, 220, 107, .1)',
+                    borderWidth: 12
+            }
+        },
+    },
+        {
+            name: '{{form.echart2.data[1].name}}',
+                data: {{form.echart2.data[1].value|safe}},
+            type: 'line',
+                smooth: true,
+            symbol: 'circle',
+            symbolSize: 5,
+            showSymbol: false,
+            lineStyle: {
+            normal: {
+                color: '#00d887',
+                    width: 2
+            }
+        },
+            areaStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: 'rgba(0, 216, 135, 0.4)'
+                    }, {
+                        offset: 0.8,
+                        color: 'rgba(0, 216, 135, 0.1)'
+                    }], false),
+                        shadowColor: 'rgba(0, 0, 0, 0.1)',
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: '#00d887',
+                        borderColor: 'rgba(221, 220, 107, .1)',
+                        borderWidth: 12
+                }
+            },
+        },
+    ]
+    };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        window.addEventListener("resize",function(){
+            myChart.resize();
+        });
+    })
+</script>
+
+
+<!--echart3_1-->
+<script>
+    $(function echarts_3() {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('echart3'));
+        option = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    lineStyle: {
+                        color: '#dddc6b'
+                    }
+                }
+            },
+            legend: {
+                top:'0%',
+                data:{{form.echart3.names|safe}},
+        textStyle: {
+            color: 'rgba(255,255,255,.5)',
+                fontSize:'12',
+        }
+    },
+        grid: {
+            left: '10',
+                top: '30',
+                right: '10',
+                bottom: '10',
+                containLabel: true
+        },
+        xAxis: [{
+            type: 'category',
+            boundaryGap: false,
+            axisLabel:  {
+                textStyle: {
+                    color: "rgba(255,255,255,.6)",
+                    fontSize:12,
+                },
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,.2)'
+                }
+            },
+            data: {{form.echart3.xAxis|safe}}
+    }, {
+            axisPointer: {show: false},
+            axisLine: {show: false},
+            position: 'bottom',
+                offset: 20,
+        }],
+        yAxis: [{
+            type: 'value',
+            axisTick: {show: false},
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,.1)'
+                }
+            },
+            axisLabel:  {
+                textStyle: {
+                    color: "rgba(255,255,255,.6)",
+                    fontSize:12,
+                },
+            },
+            splitLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,.1)'
+                }
+            }
+        }],
+            series: [
+            {
+                name: '{{form.echart3.data[0].name}}',
+                data: {{form.echart3.data[0].value|safe}},
+        type: 'line',
+            smooth: true,
+            symbol: 'circle',
+            symbolSize: 5,
+            showSymbol: false,
+            lineStyle: {
+            normal: {
+                color: '#0184d5',
+                    width: 2
+            }
+        },
+        areaStyle: {
+            normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: 'rgba(1, 132, 213, 0.4)'
+                }, {
+                    offset: 0.8,
+                    color: 'rgba(1, 132, 213, 0.1)'
+                }], false),
+                    shadowColor: 'rgba(0, 0, 0, 0.1)',
+            }
+        },
+        itemStyle: {
+            normal: {
+                color: '#0184d5',
+                    borderColor: 'rgba(221, 220, 107, .1)',
+                    borderWidth: 12
+            }
+        },
+    },
+        {
+            name: '{{form.echart3.data[1].name}}',
+                data: {{form.echart3.data[1].value|safe}},
+            type: 'line',
+                smooth: true,
+            symbol: 'circle',
+            symbolSize: 5,
+            showSymbol: false,
+            lineStyle: {
+            normal: {
+                color: '#00d887',
+                    width: 2
+            }
+        },
+            areaStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: 'rgba(0, 216, 135, 0.4)'
+                    }, {
+                        offset: 0.8,
+                        color: 'rgba(0, 216, 135, 0.1)'
+                    }], false),
+                        shadowColor: 'rgba(0, 0, 0, 0.1)',
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: '#00d887',
+                        borderColor: 'rgba(221, 220, 107, .1)',
+                        borderWidth: 12
+                }
+            },
+        },
+    ]
+    };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        window.addEventListener("resize",function(){
+            myChart.resize();
+        });
+    })
+</script>
+
+
+<!--echarts4-->
+<script>
+     $(function echarts_4() {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('echart4'));
+        option = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    lineStyle: {
+                        color: '#dddc6b'
+                    }
+                }
+            },
+            legend: {
+                top:'0%',
+                data:{{form.echart4.names|safe}},
+        textStyle: {
+            color: 'rgba(255,255,255,.5)',
+                fontSize:'12',
+        }
+    },
+        grid: {
+            left: '10',
+                top: '30',
+                right: '10',
+                bottom: '10',
+                containLabel: true
+        },
+        xAxis: [{
+            type: 'category',
+            boundaryGap: false,
+            axisLabel:  {
+                textStyle: {
+                    color: "rgba(255,255,255,.6)",
+                    fontSize:12,
+                },
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,.2)'
+                }
+            },
+            data: {{form.echart4.xAxis|safe}}
+    }, {
+            axisPointer: {show: false},
+            axisLine: {show: false},
+            position: 'bottom',
+                offset: 20,
+        }],
+        yAxis: [{
+            type: 'value',
+            axisTick: {show: false},
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,.1)'
+                }
+            },
+            axisLabel:  {
+                textStyle: {
+                    color: "rgba(255,255,255,.6)",
+                    fontSize:12,
+                },
+            },
+            splitLine: {
+                lineStyle: {
+                    color: 'rgba(255,255,255,.1)'
+                }
+            }
+        }],
+            series: [
+            {
+                name: '{{form.echart4.data[0].name}}',
+                data: {{form.echart4.data[0].value|safe}},
+        type: 'line',
+            smooth: true,
+            symbol: 'circle',
+            symbolSize: 5,
+            showSymbol: false,
+            lineStyle: {
+            normal: {
+                color: '#E74C3C',
+                    width: 2
+            }
+        },
+        areaStyle: {
+            normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: 'rgba(1, 132, 213, 0.4)'
+                }, {
+                    offset: 0.8,
+                    color: 'rgba(1, 132, 213, 0.1)'
+                }], false),
+                    shadowColor: 'rgba(0, 0, 0, 0.1)',
+            }
+        },
+        itemStyle: {
+            normal: {
+                color: '#E74C3C',
+                    borderColor: 'rgba(221, 220, 107, .1)',
+                    borderWidth: 12
+            }
+        },
+    },
+        {
+            name: '{{form.echart4.data[1].name}}',
+                data: {{form.echart4.data[1].value|safe}},
+            type: 'line',
+                smooth: true,
+            symbol: 'circle',
+            symbolSize: 5,
+            showSymbol: false,
+            lineStyle: {
+            normal: {
+                color: '#0184d5',
+                    width: 2
+            }
+        },
+            areaStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: 'rgba(0, 216, 135, 0.4)'
+                    }, {
+                        offset: 0.8,
+                        color: 'rgba(0, 216, 135, 0.1)'
+                    }], false),
+                        shadowColor: 'rgba(0, 0, 0, 0.1)',
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: '#0184d5',
+                        borderColor: 'rgba(221, 220, 107, .1)',
+                        borderWidth: 12
+                }
+            },
+        },
+    ]
+    };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        window.addEventListener("resize",function(){
+            myChart.resize();
+        });
+    })
+</script>
+<!--echarts5-->
+<script>
+    $(function echarts_5() {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('echart5'));
+
+        option = {
+            //  backgroundColor: '#00265f',
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            grid: {
+                left: '0%',
+                top:'10px',
+                right: '0%',
+                bottom: '2%',
+                containLabel: true
+            },
+            xAxis: [{
+                type: 'category',
+                data: {{form.echart5.xAxis|safe}},
+            axisLine: {
+            show: true,
+                lineStyle: {
+                color: "rgba(255,255,255,.1)",
+                    width: 1,
+                    type: "solid"
+            },
+        },
+        axisTick: {
+            show: false,
+        },
+        axisLabel:  {
+            interval: 0,
+                // rotate:50,
+                show: true,
+                splitNumber: 15,
+                textStyle: {
+                color: "rgba(255,255,255,.6)",
+                    fontSize: '12',
+            },
+        },
+    }],
+        yAxis: [{
+            type: 'value',
+            axisLabel: {
+                //formatter: '{value} %'
+                show:true,
+                textStyle: {
+                    color: "rgba(255,255,255,.6)",
+                    fontSize: '12',
+                },
+            },
+            axisTick: {
+                show: false,
+            },
+            axisLine: {
+                show: true,
+                lineStyle: {
+                    color: "rgba(255,255,255,.1	)",
+                    width: 1,
+                    type: "solid"
+                },
+            },
+            splitLine: {
+                lineStyle: {
+                    color: "rgba(255,255,255,.1)",
+                }
+            }
+        }],
+            series: [{
+            type: 'bar',
+            data: {{form.echart5.series|safe}},
+        barWidth:'35%', //柱子宽度
+            // barGap: 1, //柱子之间间距
+            itemStyle: {
+            normal: {
+                color:'#2f89cf',
+                    opacity: 1,
+                    barBorderRadius: 5,
+            }
+        }
+    }
+    ]
+    };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        window.addEventListener("resize",function(){
+            myChart.resize();
+        });
+    })
+</script>
+
+
+<script>
+    // 百度地图API功能
+    var map = new BMap.Map("echart6");    // 创建Map实例
+    map.centerAndZoom(new BMap.Point(120.30319840554199, 31.581367566873144), 11);  // 初始化地图,设置中心点坐标和地图级别
+    //添加地图类型控件
+    map.addControl(new BMap.MapTypeControl({
+        mapTypes:[
+            BMAP_NORMAL_MAP,
+            BMAP_HYBRID_MAP
+        ]}));
+    var mapStyle={
+        style:"macarons"
+    };
+    map.setMapStyle(mapStyle);
+    map.setCurrentCity("无锡");          // 设置地图显示的城市 此项是必须设置的
+    map.enableScrollWheelZoom(true);
+</script>
+</body>
+</html>
