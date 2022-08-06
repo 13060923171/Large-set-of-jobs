@@ -84,28 +84,31 @@ def qualified_excellent():
     df = df.replace(np.NaN,0)
     #语文合格率
     df = df.astype(int)
+
     def language_tihuan(x):
-        if x < 90:
-            return 0
-        elif x >= 90 and x < 120:
+        if 90 < x < 120:
             return 1
-        else:
+        elif 120 <= x <= 150:
             return 2
+        else:
+            return 0
+
     def english_tihuan(x):
-        if x < 72:
-            return 0
-        elif x >= 72 and x < 96:
+        if 72 < x < 96:
             return 1
-        else:
+        elif 96 <= x <= 120:
             return 2
+        else:
+            return 0
 
     def think_tihuan(x):
-        if x < 30:
-            return 0
-        elif x >= 30 and x < 40:
+        if 30 < x < 40:
             return 1
-        else:
+        elif 40 <= x <= 50:
             return 2
+        else:
+            return 0
+
     df['语文'] = df['语文'].apply(language_tihuan)
     df['数学'] = df['数学'].apply(english_tihuan)
     df['英语'] = df['英语'].apply(english_tihuan)
@@ -114,12 +117,15 @@ def qualified_excellent():
     list_name = ['语文','数学','英语','思品','科学']
     sum_data = []
     for l in list_name:
-        hege = float(float(len(df.loc[df[l]==1,l]) / len(df[l])))
-        he1 ='%0.2lf' %float(float(hege) * 100)
-        hege = str(he1) + "%"
+
         yx = float(float(len(df.loc[df[l]==2,l]) / len(df[l])))
         yx1 = '%0.2lf' % float(float(yx) * 100)
         yx = str(yx1) + "%"
+        hege = float(float(len(df.loc[df[l] == 1, l]) / len(df[l])))
+        he1 = '%0.2lf' % float(float(hege) * 100)
+        he1 = float(he1) + float(yx1)
+        hege = str(he1) + "%"
+
         d = {
             '科目':l,
             '合格率':hege,
@@ -141,29 +147,30 @@ def student_qualified():
 
     def qualified_excellent(x):
         df = x
+
         def language_tihuan(x):
-            if x < 90:
-                return 0
-            elif x >= 90 and x < 120:
+            if 90 < x < 120:
                 return 1
-            else:
+            elif 120 <= x <= 150:
                 return 2
+            else:
+                return 0
 
         def english_tihuan(x):
-            if x < 72:
-                return 0
-            elif x >= 72 and x < 96:
+            if 72 < x < 96:
                 return 1
-            else:
+            elif 96 <= x <= 120:
                 return 2
+            else:
+                return 0
 
         def think_tihuan(x):
-            if x < 30:
-                return 0
-            elif x >= 30 and x < 40:
+            if 30 < x < 40:
                 return 1
-            else:
+            elif 40 <= x <= 50:
                 return 2
+            else:
+                return 0
 
         df['语文'] = df['语文'].apply(language_tihuan)
         df['数学'] = df['数学'].apply(english_tihuan)
@@ -173,8 +180,11 @@ def student_qualified():
         list_name = ['语文', '数学', '英语', '思品', '科学']
         sum_data = []
         for l in list_name:
+            yx = float(float(len(df.loc[df[l] == 2, l]) / len(df[l])))
+            yx1 = '%0.2lf' % float(float(yx) * 100)
             hege = float(float(len(df.loc[df[l] == 1, l]) / len(df[l])))
             he1 = '%0.2lf' % float(float(hege) * 100)
+            hege = hege + yx
             # hege = str(he1) + "%"
             sum_data.append(hege)
         return sum_data
@@ -212,29 +222,30 @@ def student_excellent():
 
     def qualified_excellent(x):
         df = x
+
         def language_tihuan(x):
-            if x < 90:
-                return 0
-            elif x >= 90 and x < 120:
+            if 90 < x < 120:
                 return 1
-            else:
+            elif 120 <= x <= 150:
                 return 2
+            else:
+                return 0
 
         def english_tihuan(x):
-            if x < 72:
-                return 0
-            elif x >= 72 and x < 96:
+            if 72 < x < 96:
                 return 1
-            else:
+            elif 96 <= x <= 120:
                 return 2
+            else:
+                return 0
 
         def think_tihuan(x):
-            if x < 30:
-                return 0
-            elif x >= 30 and x < 40:
+            if 30 < x < 40:
                 return 1
-            else:
+            elif 40 <= x <= 50:
                 return 2
+            else:
+                return 0
 
         df['语文'] = df['语文'].apply(language_tihuan)
         df['数学'] = df['数学'].apply(english_tihuan)
@@ -286,28 +297,28 @@ def total_qualified():
     df = df.astype(int)
 
     def language_tihuan(x):
-        if x < 90:
-            return 0
-        elif x >= 90 and x < 120:
+        if 90 < x < 120:
             return 1
-        else:
+        elif 120 <= x <= 150:
             return 2
+        else:
+            return 0
 
     def english_tihuan(x):
-        if x < 72:
-            return 0
-        elif x >= 72 and x < 96:
+        if 72 < x < 96:
             return 1
-        else:
+        elif 96 <= x <= 120:
             return 2
+        else:
+            return 0
 
     def think_tihuan(x):
-        if x < 30:
-            return 0
-        elif x >= 30 and x < 40:
+        if 30 < x < 40:
             return 1
-        else:
+        elif 40 <= x <= 50:
             return 2
+        else:
+            return 0
 
     df['语文'] = df['语文'].apply(language_tihuan)
     df['数学'] = df['数学'].apply(english_tihuan)
@@ -382,28 +393,28 @@ def ranking():
         # df = df.astype(int)
 
         def language_tihuan(x):
-            if x < 90:
-                return 0
-            elif x >= 90 and x < 120:
+            if 90 < x < 120:
                 return 1
-            else:
+            elif 120 <= x <= 150:
                 return 2
+            else:
+                return 0
 
         def english_tihuan(x):
-            if x < 72:
-                return 0
-            elif x >= 72 and x < 96:
+            if 72 < x < 96:
                 return 1
-            else:
+            elif 96 <= x <= 120:
                 return 2
+            else:
+                return 0
 
         def think_tihuan(x):
-            if x < 30:
-                return 0
-            elif x >= 30 and x < 40:
+            if 30 < x < 40:
                 return 1
-            else:
+            elif 40 <= x <= 50:
                 return 2
+            else:
+                return 0
 
         df['语文'] = df['语文'].apply(language_tihuan)
         df['数学'] = df['数学'].apply(english_tihuan)
@@ -423,28 +434,28 @@ def ranking():
         df = df.replace(np.NaN, 0)
         # df = df.astype(int)
         def language_tihuan(x):
-            if x < 90:
-                return 0
-            elif x >= 90 and x < 120:
+            if 90 < x < 120:
                 return 1
-            else:
+            elif 120 <= x <= 150:
                 return 2
+            else:
+                return 0
 
         def english_tihuan(x):
-            if x < 72:
-                return 0
-            elif x >= 72 and x < 96:
+            if 72 < x < 96:
                 return 1
-            else:
+            elif 96 <= x <= 120:
                 return 2
+            else:
+                return 0
 
         def think_tihuan(x):
-            if x < 30:
-                return 0
-            elif x >= 30 and x < 40:
+            if 30 < x < 40:
                 return 1
-            else:
+            elif 40 <= x <= 50:
                 return 2
+            else:
+                return 0
 
         df['语文'] = df['语文'].apply(language_tihuan)
         df['数学'] = df['数学'].apply(english_tihuan)
@@ -631,29 +642,30 @@ def area_class():
     def qualified_3(x):
         df = x
         df = df.replace(np.NaN, 0)
+
         def language_tihuan(x):
-            if x < 90:
-                return 0
-            elif x >= 90 and x < 120:
+            if 90 < x < 120:
                 return 1
-            else:
+            elif 120 <= x <= 150:
                 return 2
+            else:
+                return 0
 
         def english_tihuan(x):
-            if x < 72:
-                return 0
-            elif x >= 72 and x < 96:
+            if 72 < x < 96:
                 return 1
-            else:
+            elif 96 <= x <= 120:
                 return 2
+            else:
+                return 0
 
         def think_tihuan(x):
-            if x < 30:
-                return 0
-            elif x >= 30 and x < 40:
+            if 30 < x < 40:
                 return 1
-            else:
+            elif 40 <= x <= 50:
                 return 2
+            else:
+                return 0
 
         df['语文'] = df['语文'].apply(language_tihuan)
         df['数学'] = df['数学'].apply(english_tihuan)
@@ -673,28 +685,28 @@ def area_class():
         df = df.replace(np.NaN, 0)
 
         def language_tihuan(x):
-            if x < 90:
-                return 0
-            elif x >= 90 and x < 120:
+            if 90 < x < 120:
                 return 1
-            else:
+            elif 120 <= x <= 150:
                 return 2
+            else:
+                return 0
 
         def english_tihuan(x):
-            if x < 72:
-                return 0
-            elif x >= 72 and x < 96:
+            if 72 < x < 96:
                 return 1
-            else:
+            elif 96 <= x <= 120:
                 return 2
+            else:
+                return 0
 
         def think_tihuan(x):
-            if x < 30:
-                return 0
-            elif x >= 30 and x < 40:
+            if 30 < x < 40:
                 return 1
-            else:
+            elif 40 <= x <= 50:
                 return 2
+            else:
+                return 0
 
         df['语文'] = df['语文'].apply(language_tihuan)
         df['数学'] = df['数学'].apply(english_tihuan)
