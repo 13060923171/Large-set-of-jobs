@@ -530,18 +530,103 @@ def class_ranking():
     path = './原始数据表/{}.xlsx'.format(name)
     df = pd.read_excel(path, sheet_name='Sheet1').loc[1:, ['学校','班级', '语文', '数学', '英语', '思品', '科学']]
     df = df.replace(np.NaN, 0)
+    def qualified_excellent(x):
+        df = x
+
+        def language_tihuan(x):
+            if 90 < x < 120:
+                return 1
+            elif 120 <= x <= 150:
+                return 2
+            else:
+                return 0
+
+        def english_tihuan(x):
+            if 72 < x < 96:
+                return 1
+            elif 96 <= x <= 120:
+                return 2
+            else:
+                return 0
+
+        def think_tihuan(x):
+            if 30 < x < 40:
+                return 1
+            elif 40 <= x <= 50:
+                return 2
+            else:
+                return 0
+
+        df['语文'] = df['语文'].apply(language_tihuan)
+        df['数学'] = df['数学'].apply(english_tihuan)
+        df['英语'] = df['英语'].apply(english_tihuan)
+        df['思品'] = df['思品'].apply(think_tihuan)
+        df['科学'] = df['科学'].apply(think_tihuan)
+        list_name = ['语文', '数学', '英语', '思品', '科学']
+        sum_data = []
+        for l in list_name:
+            yx = float(float(len(df.loc[df[l] == 2, l]) / len(df[l])))
+            hege = float(float(len(df.loc[df[l] == 1, l]) / len(df[l])))
+            hege = hege + yx
+            sum_data.append([hege,yx])
+        return sum_data
+
+    data = df.groupby(['学校', '班级']).apply(qualified_excellent)
+    sum_data = []
+    for n, l in zip(list(data.index), list(data.values)):
+        d = {
+            '学校': n[0],
+            '班级': n[1],
+            '语文-合格率': float(l[0][0]),
+            '数学-合格率': float(l[1][0]),
+            '英语-合格率': float(l[2][0]),
+            '思品-合格率': float(l[3][0]),
+            '科学-合格率': float(l[4][0]),
+            '语文-优秀率': float(l[0][1]),
+            '数学-优秀率': float(l[1][1]),
+            '英语-优秀率': float(l[2][1]),
+            '思品-优秀率': float(l[3][1]),
+            '科学-优秀率': float(l[4][1]),
+        }
+        sum_data.append(d)
+    data = pd.DataFrame(sum_data, columns=['学校','班级','语文-优秀率', '数学-优秀率', '英语-优秀率', '思品-优秀率', '科学-优秀率','语文-合格率', '数学-合格率', '英语-合格率', '思品-合格率', '科学-合格率'])
     data1 = df.groupby(['学校','班级']).agg('mean')
-    data1['语文'] = data1['语文'].rank(method='first', ascending=False)
-    data1['数学'] = data1['数学'].rank(method='first', ascending=False)
-    data1['英语'] = data1['英语'].rank(method='first', ascending=False)
-    data1['思品'] = data1['思品'].rank(method='first', ascending=False)
-    data1['科学'] = data1['科学'].rank(method='first', ascending=False)
-    data1['语文'] = data1['语文'].astype(int)
-    data1['数学'] = data1['数学'].astype(int)
-    data1['英语'] = data1['英语'].astype(int)
-    data1['思品'] = data1['思品'].astype(int)
-    data1['科学'] = data1['科学'].astype(int)
-    return data1
+    data2 = pd.merge(data,data1,on=['学校','班级'])
+    data3 = pd.DataFrame()
+    data3['学校'] = data2['学校']
+    data3['班级'] = data2['班级']
+    data3['语文-平均分'] = data2['语文']
+    data3['语文-排名'] = data2['语文'].rank(method='first', ascending=False)
+    data3['语文-合格率'] = data2['语文-合格率'].apply(xiaoshu)
+    data3['语文-优秀率'] = data2['语文-优秀率'].apply(xiaoshu)
+    data3['数学-平均分'] = data2['数学']
+    data3['数学-排名'] = data2['数学'].rank(method='first', ascending=False)
+    data3['数学-合格率'] = data2['数学-合格率'].apply(xiaoshu)
+    data3['数学-优秀率'] = data2['数学-优秀率'].apply(xiaoshu)
+    data3['英语-平均分'] = data2['英语']
+    data3['英语-排名'] = data2['英语'].rank(method='first', ascending=False)
+    data3['英语-合格率'] = data2['英语-合格率'].apply(xiaoshu)
+    data3['英语-优秀率'] = data2['英语-优秀率'].apply(xiaoshu)
+    data3['思品-平均分'] = data2['思品']
+    data3['思品-排名'] = data2['思品'].rank(method='first', ascending=False)
+    data3['思品-合格率'] = data2['思品-合格率'].apply(xiaoshu)
+    data3['思品-优秀率'] = data2['思品-优秀率'].apply(xiaoshu)
+    data3['科学-平均分'] = data2['科学']
+    data3['科学-排名'] = data2['科学'].rank(method='first', ascending=False)
+    data3['科学-合格率'] = data2['科学-合格率'].apply(xiaoshu)
+    data3['科学-优秀率'] = data2['科学-优秀率'].apply(xiaoshu)
+    data3['语文-排名'] = data3['语文-排名'].astype(int)
+    data3['数学-排名'] = data3['数学-排名'].astype(int)
+    data3['英语-排名'] = data3['英语-排名'].astype(int)
+    data3['思品-排名'] = data3['思品-排名'].astype(int)
+    data3['科学-排名'] = data3['科学-排名'].astype(int)
+    data3['语文-平均分'] = data3['语文-平均分'].astype(int)
+    data3['数学-平均分'] = data3['数学-平均分'].astype(int)
+    data3['英语-平均分'] = data3['英语-平均分'].astype(int)
+    data3['思品-平均分'] = data3['思品-平均分'].astype(int)
+    data3['科学-平均分'] = data3['科学-平均分'].astype(int)
+    # data3 = data2.drop(['语文','数学','英语','思品','科学'],axis=1)
+    return data3
 
 
 def comparison_table():
