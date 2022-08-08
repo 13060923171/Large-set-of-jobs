@@ -530,6 +530,10 @@ def class_ranking():
     path = './原始数据表/{}.xlsx'.format(name)
     df = pd.read_excel(path, sheet_name='Sheet1').loc[1:, ['学校','班级', '语文', '数学', '英语', '思品', '科学']]
     df = df.replace(np.NaN, 0)
+    def xuai1(x):
+        x1 = "%0.2lf" %x
+        return x1
+
     def qualified_excellent(x):
         df = x
 
@@ -591,6 +595,7 @@ def class_ranking():
         sum_data.append(d)
     data = pd.DataFrame(sum_data, columns=['学校','班级','语文-优秀率', '数学-优秀率', '英语-优秀率', '思品-优秀率', '科学-优秀率','语文-合格率', '数学-合格率', '英语-合格率', '思品-合格率', '科学-合格率'])
     data1 = df.groupby(['学校','班级']).agg('mean')
+
     data2 = pd.merge(data,data1,on=['学校','班级'])
     data3 = pd.DataFrame()
     data3['学校'] = data2['学校']
@@ -620,11 +625,11 @@ def class_ranking():
     data3['英语-排名'] = data3['英语-排名'].astype(int)
     data3['思品-排名'] = data3['思品-排名'].astype(int)
     data3['科学-排名'] = data3['科学-排名'].astype(int)
-    data3['语文-平均分'] = data3['语文-平均分'].astype(int)
-    data3['数学-平均分'] = data3['数学-平均分'].astype(int)
-    data3['英语-平均分'] = data3['英语-平均分'].astype(int)
-    data3['思品-平均分'] = data3['思品-平均分'].astype(int)
-    data3['科学-平均分'] = data3['科学-平均分'].astype(int)
+    data3['语文-平均分'] = data3['语文-平均分'].apply(xuai1)
+    data3['数学-平均分'] = data3['数学-平均分'].apply(xuai1)
+    data3['英语-平均分'] = data3['英语-平均分'].apply(xuai1)
+    data3['思品-平均分'] = data3['思品-平均分'].apply(xuai1)
+    data3['科学-平均分'] = data3['科学-平均分'].apply(xuai1)
     # data3 = data2.drop(['语文','数学','英语','思品','科学'],axis=1)
     return data3
 
